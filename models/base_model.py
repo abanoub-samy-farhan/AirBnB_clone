@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 """Base Model for AirBnB project"""
 import uuid
-from models import storage
 from datetime import datetime
+import models
 
 
 class BaseModel:
@@ -19,7 +19,7 @@ class BaseModel:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
-            storage.new(self)
+            models.storage.new(self)
 
     def __str__(self):
         """returning a string defining the class"""
@@ -37,4 +37,4 @@ class BaseModel:
     def save(self):
         """Save the file"""
         self.updated_at = datetime.now()
-        storage.save()
+        models.storage.save()
