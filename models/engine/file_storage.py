@@ -2,6 +2,12 @@
 """Defines the FileStorage class."""
 import json
 from models.base_model import BaseModel
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
+from models.state import State
+from models.user import User
+from models.city import City
 
 
 
@@ -38,7 +44,7 @@ class FileStorage:
                 obj_dictionary = json.load(f)
             for key, obj_data in obj_dictionary.items():
                 cls_name = obj_data['__class__']
-                print(cls_name)
+                del obj_data['__class__']
                 obj = eval(cls_name)(**obj_data)
                 self.new(obj)
         except FileNotFoundError:
