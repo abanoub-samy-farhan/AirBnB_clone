@@ -134,6 +134,26 @@ class HBNBCommand(cmd.Cmd):
             value_type = type(obj.__dict__[arglist[2]])
             obj.__dict__[arglist[2]] = value_type(arglist[3])
             storage.save()
+    def do_count(self, args):
+        count = 0
+        obj_all = storage.all()
+        if args not in self.__classes:
+            print("** class doesn't exist **")
+        else:
+            for obj in obj_all.values():
+                if obj.__class__.__name__ == args:
+                    count += 1
+        print(count)
+
+    def default(self, line: str):
+        arglist = line.split(".")
+        functions = {
+            "all()": self.do_all,
+            "count()": self.do_count
+        }
+        if arglist[1] in functions:
+            functions[arglist[1]](arglist[0])
+        
     
 
 if __name__ == '__main__':
