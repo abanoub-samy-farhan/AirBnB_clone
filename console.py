@@ -14,21 +14,7 @@ from models.amenity import Amenity
 from models.review import Review
 
 def parse(arg):
-    curly_braces = re.search(r"\{(.*?)\}", arg)
-    brackets = re.search(r"\[(.*?)\]", arg)
-    if curly_braces is None:
-        if brackets is None:
-            return [i.strip(",") for i in split(arg)]
-        else:
-            lexer = split(arg[:brackets.span()[0]])
-            retl = [i.strip(",") for i in lexer]
-            retl.append(brackets.group())
-            return retl
-    else:
-        lexer = split(arg[:curly_braces.span()[0]])
-        retl = [i.strip(",") for i in lexer]
-        retl.append(curly_braces.group())
-        return retl
+    return tuple(map(str, arg.split()))
 
 class HBNBCommand(cmd.Cmd):
     prompt = "(hbnb) "
@@ -145,14 +131,26 @@ class HBNBCommand(cmd.Cmd):
                     count += 1
         print(count)
 
-    def default(self, line: str):
-        arglist = line.split(".")
+    def default(self, arg: str):
+        """Defualt function"""
         functions = {
-            "all()": self.do_all,
-            "count()": self.do_count
+            "all": self.do_all,
+            "count": self.do_count,
+            "destroy": self.do_destory,
+            "update": self.do_update,
+            "show": self.do_show
         }
-        if arglist[1] in functions:
-            functions[arglist[1]](arglist[0])
+        match = re.search(r"\.", arg)
+        if match is not None:
+            argl = [arg[:match.span()[0]], arg[match.span()[1]:]]
+            match = re.search(r"\((.*?)\)", argl[1])
+            if match is not None:
+                command = [argl[1][:match.span()[0]], match.group()[1:-1]]
+                if command[0] in functions:
+                    formated_line = "{} {}".format(argl[0], command[1])
+                    return functions[command[0]](formated_line)
+        print("*** Unknown syntax: {}".format(arg))
+        return False
         
     
 
