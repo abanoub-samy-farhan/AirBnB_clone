@@ -55,6 +55,8 @@ class TestBaseModelInstantiation(unittest.TestCase):
         self.assertIn("'id': '123456'", bmstr)
         self.assertIn("'created_at': " + dt_repr, bmstr)
         self.assertIn("'updated_at': " + dt_repr, bmstr)
+        bm.save()
+        self.assertNotEqual(bm.created_at, bm.updated_at)
 
     def test_args_unused(self):
         bm = BaseModel(None)

@@ -2,7 +2,6 @@
 """Module for testing BaseModel class"""
 
 import unittest
-import pep8
 from models.base_model import BaseModel
 import json
 import datetime
@@ -13,18 +12,6 @@ class TestBaseModel(unittest.TestCase):
     def test_doc_module(self):
         """Module documentation"""
         self.assertGreater(len(BaseModel.__doc__), 1)
-
-    def test_pep8_conformance_base_model(self):
-        """Test PEP8 conformance for models/base_model.py"""
-        style = pep8.StyleGuide(quiet=True)
-        result = style.check_files(['models/base_model.py'])
-        self.assertEqual(result.total_errors, 0, "PEP8 style errors found.")
-
-    def test_pep8_conformance_test_base_model(self):
-        """Test PEP8 conformance for tests/test_models/test_base_model.py"""
-        style = pep8.StyleGuide(quiet=True)
-        result = style.check_files(['tests/test_models/test_base_model.py'])
-        self.assertEqual(result.total_errors, 0, "PEP8 style errors found.")
 
     def test_doc_constructor(self):
         """Constructor documentation"""

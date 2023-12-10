@@ -71,7 +71,7 @@ class HBNBCommand(cmd.Cmd):
         else:
             print(all_objs[f"{arglist[0]}.{arglist[1]}"])
     
-    def do_destory(self, args):
+    def do_destroy(self, args):
         """Deletes an instance based on the class name and id"""
         argl = parse(args)
         all_objs = storage.all()
