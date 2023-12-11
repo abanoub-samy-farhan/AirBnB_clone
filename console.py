@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """Console of the Project"""
-import os
+import sys
 import cmd
 import re
 import shlex
@@ -19,7 +19,7 @@ def parse(arg):
 
 
 class HBNBCommand(cmd.Cmd):
-    prompt = "(hbnb) "
+    prompt = "(hbnb) " if sys.__stdin__.isatty() else ''
     file = None
     __classes = {
         "BaseModel",

@@ -12,7 +12,9 @@ class BaseModel:
             dictionary_mod = self.__dict__
             for key, value in kwargs.items():
                 if key == "created_at" or key == "updated_at":
-                    dictionary_mod[key] = datetime.strptime(kwargs[key], "%Y-%m-%dT%H:%M:%S.%f")
+                    time_form = datetime.strptime(kwargs[key],
+                                                  "%Y-%m-%dT%H:%M:%S.%f")
+                    dictionary_mod[key] = time_form
                 elif key != "__class__":
                     dictionary_mod[key] = value
         else:
