@@ -3,7 +3,7 @@
 import os
 import cmd
 import re
-from shlex import split
+import shlex
 from models import storage
 from models.base_model import BaseModel
 from models.user import User
@@ -13,8 +13,10 @@ from models.place import Place
 from models.amenity import Amenity
 from models.review import Review
 
+
 def parse(arg):
-    return tuple(map(str, arg.split()))
+    return shlex.split(arg)
+
 
 class HBNBCommand(cmd.Cmd):
     prompt = "(hbnb) "
@@ -32,18 +34,23 @@ class HBNBCommand(cmd.Cmd):
     def do_quit(self, args):
         """Quit command to exit the program"""
         return True
+
     def help_quit(self):
         """Method used to customize the help message of the Quit command"""
         print("Quit command to exit the program\n")
+
     def do_EOF(self, args):
         """EOF command to exit the program"""
         return True
+
     def help_EOF(self):
         """Method used to customize the message of the EOF help"""
         print("EOF command to exit the program")
+
     def emptyline(self):
         """Condititonal method used while their are no args"""
         pass
+
     def do_create(self, args):
         """Creating an instance of a model"""
         argl = parse(args)
@@ -55,6 +62,7 @@ class HBNBCommand(cmd.Cmd):
             obj = eval(argl[0])()
             print(obj.id)
             storage.save()
+
     def do_show(self, args):
         """Show a specific instacne is found or not
         Usage: show <class> <id> or <class>.show(<id>)"""
@@ -70,7 +78,7 @@ class HBNBCommand(cmd.Cmd):
             print("** no instance found **")
         else:
             print(all_objs[f"{arglist[0]}.{arglist[1]}"])
-    
+
     def do_destroy(self, args):
         """Deletes an instance based on the class name and id"""
         argl = parse(args)
@@ -86,9 +94,10 @@ class HBNBCommand(cmd.Cmd):
         else:
             del all_objs[f"{argl[0]}.{argl[1]}"]
             storage.save()
-        
+
     def do_all(self, args):
-        """Prints all string representation of all instances based or not on the class name"""
+        """Prints all string representation of all
+        instances based or not on the class name"""
         arglist = parse(args)
         obj_all = storage.all()
         if not arglist:
@@ -96,11 +105,14 @@ class HBNBCommand(cmd.Cmd):
         elif len(arglist) == 1 and (arglist[0] not in self.__classes):
             print("** class doesn't exist **")
         else:
-            obj_list = [str(obj) for obj in obj_all.values() if arglist[0] == obj.__class__.__name__]
+            obj_list = [str(obj) for obj in obj_all.values()
+                        if arglist[0] == obj.__class__.__name__]
             print(obj_list)
+
     def do_update(self, args):
-        """Updates an instance based on the class name and id by adding or updating attribute
-           Usage: update <class name> <id> <attribute name> '<attribute value>'"""
+        """Updates an instance based on the class name
+           Usage: update <class name> <id>
+           <attribute name> '<attribute value>'"""
         arglist = parse(args)
         obj_all = storage.all()
         if not arglist:
@@ -117,9 +129,10 @@ class HBNBCommand(cmd.Cmd):
             print("** value missing **")
         else:
             obj = obj_all[f"{arglist[0]}.{arglist[1]}"]
-            value_type = type(obj.__dict__[arglist[2]])
+            value_type = type(obj.__class__.__dict__[arglist[2]])
             obj.__dict__[arglist[2]] = value_type(arglist[3])
             storage.save()
+
     def do_count(self, args):
         count = 0
         obj_all = storage.all()
@@ -151,8 +164,7 @@ class HBNBCommand(cmd.Cmd):
                     return functions[command[0]](formated_line)
         print("*** Unknown syntax: {}".format(arg))
         return False
-        
-    
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
