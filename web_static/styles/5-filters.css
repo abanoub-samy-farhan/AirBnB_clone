@@ -1,0 +1,20 @@
+.filters {
+    height: 100%;
+    width: 25%;
+    border-right: 1px solid #DDDDDD;
+    box-sizing: border-box;
+    padding: 20px;
+}
+
+.locations {
+    border-right: none;
+}
+
+h3 {
+    font-weight: 600;
+}
+
+h4 {
+    font-weight: 400;
+    font-size: 14px;
+}
